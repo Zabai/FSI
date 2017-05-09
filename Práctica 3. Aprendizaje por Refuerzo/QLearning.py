@@ -1,3 +1,4 @@
+# coding=utf-8
 import random
 import numpy as np
 import matplotlib.pyplot as plt
@@ -79,23 +80,78 @@ def qlearning(s1, a, s2):
     Q[s1][a] = Rewards[s2] + discount * max(Q[s2])
     return
 
+def greedy(state):
+    index = np.argmax(Q[state])
+    if(Q[state][index] == 0): return getRndAction(state)
+    return actions_list.keys()[actions_list.values().index(index)]
 
-# Episodes
-for i in xrange(100):
-    state = getRndState()
-    while state != final_state:
-        action = getRndAction(state)
-        y = getStateCoord(state)[0] + actions_vectors[action][0]
-        x = getStateCoord(state)[1] + actions_vectors[action][1]
-        new_state = getState(y, x)
-        qlearning(state, actions_list[action], new_state)
-        state = new_state
+def egreedy(state, epsilon):
+    chance = random.random()
+    if(chance >= epsilon): return greedy(state)
+    return getRndAction(state)
 
-print Q
+# Aleatorio
+def getDefaultAverage(episodes):
+    global Q
+    Q = np.zeros((height * width, num_actions))  # Q matrix
+    actions = 0
+    for i in xrange(episodes):
+        state = getRndState()
+        while state != final_state:
+            action = getRndAction(state)
+            actions += 1
+            y = getStateCoord(state)[0] + actions_vectors[action][0]
+            x = getStateCoord(state)[1] + actions_vectors[action][1]
+            new_state = getState(y, x)
+            qlearning(state, actions_list[action], new_state)
+            state = new_state
+    return float(actions) / float(episodes)
 
+# Greedy
+def getGreedyAverage(episodes):
+    global Q
+    Q = np.zeros((height * width, num_actions))  # Q matrix
+    actions = 0
+    for i in xrange(episodes):
+        state = getRndState()
+        while state != final_state:
+            action = greedy(state)
+            actions += 1
+            y = getStateCoord(state)[0] + actions_vectors[action][0]
+            x = getStateCoord(state)[1] + actions_vectors[action][1]
+            new_state = getState(y, x)
+            qlearning(state, actions_list[action], new_state)
+            state = new_state
+    return float(actions) / float(episodes)
 
+# E-Greedy
+def getEgreedyAverage(episodes, epsilon):
+    global Q
+    Q = np.zeros((height * width, num_actions))  # Q matrix
+    actions = 0
+    for i in xrange(episodes):
+        state = getRndState()
+        while state != final_state:
+            action = egreedy(state, epsilon)
+            actions += 1
+            y = getStateCoord(state)[0] + actions_vectors[action][0]
+            x = getStateCoord(state)[1] + actions_vectors[action][1]
+            new_state = getState(y, x)
+            qlearning(state, actions_list[action], new_state)
+            state = new_state
+    return float(actions) / float(episodes)
+
+epoch = 100
+print "Promedio de acciones por episodio:"
+print "Aleatorio = ", getDefaultAverage(epoch)
+print "Greedy = ", getGreedyAverage(epoch)
+print "E-Greedy(20%) = ", getEgreedyAverage(epoch, .2)
+print "E-Greedy(40%) = ", getEgreedyAverage(epoch, .4)
+print "E-Greedy(60%) = ", getEgreedyAverage(epoch, .6)
+print "E-Greedy(80%) = ", getEgreedyAverage(epoch, .8)
+
+"""
 # Q matrix plot
-
 s = 0
 ax = plt.axes()
 ax.axis([-1, width + 1, -1, height + 1])
@@ -121,4 +177,5 @@ for j in xrange(height):
     plt.plot([i+1, i+1], [0, height], 'b')
     plt.plot([0, width], [j+1, j+1], 'b')
 
-plt.show()
+#plt.show()
+"""
