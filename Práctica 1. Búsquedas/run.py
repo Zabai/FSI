@@ -2,9 +2,9 @@
 
 import search
 
-ab = search.GPSProblem('A', 'B', search.romania)
-af = search.GPSProblem('A', 'F', search.romania)
-ae = search.GPSProblem('A', 'E', search.romania)
+ab = search.GPSProblem('O', 'E', search.romania)
+#af = search.GPSProblem('A', 'F', search.romania)
+#ae = search.GPSProblem('A', 'E', search.romania)
 
 # Alredy implemented
 '''

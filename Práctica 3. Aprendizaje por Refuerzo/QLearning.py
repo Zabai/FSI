@@ -1,7 +1,6 @@
 # coding=utf-8
 import random
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 # Environment size
@@ -142,7 +141,7 @@ def getEgreedyAverage(episodes, epsilon):
     return float(actions) / float(episodes)
 
 epoch = 100
-print "Promedio de acciones por episodio:"
+print "Promedio de acciones por 100 episodios:"
 print "Aleatorio = ", getDefaultAverage(epoch)
 print "Greedy = ", getGreedyAverage(epoch)
 print "E-Greedy(20%) = ", getEgreedyAverage(epoch, .2)

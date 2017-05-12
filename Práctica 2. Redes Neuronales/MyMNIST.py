@@ -62,7 +62,7 @@ loss = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))   #
 
 #train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)  # learning rate: 0.01
                                                                 # Optimizador descenso por el gradiente para Minimizar el "error"
-train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)
+train = tf.train.GradientDescentOptimizer(0.5).minimize(loss)   # learning rate: 0.5
 
 init = tf.initialize_all_variables()	# Inicializa variables
 
@@ -73,16 +73,37 @@ print "----------------------"
 print "   Start training...  "
 print "----------------------"
 
+epoch = 0
 batch_size = 100	# Cantidad del lote
+error = 0
+prevError = -1
 
-for epoch in xrange(12):	# Epocas
+while(1):
     for jj in xrange(len(x_trainingData) / batch_size):
         batch_xs = x_trainingData[jj * batch_size: jj * batch_size + batch_size]
         batch_ys = y_trainingData[jj * batch_size: jj * batch_size + batch_size]
         sess.run(train, feed_dict={x: batch_xs, y_: batch_ys})
 
     error = sess.run(loss, feed_dict={x: x_validationData, y_: y_validationData})
+
+    if(abs(error - prevError) < 0.00005): break
+
     print "Epoch #:", epoch, "Error: ", error
+
+    epoch += 1
+    prevError = error
+
+# for epoch in xrange(12):	# Epocas
+#     for jj in xrange(len(x_trainingData) / batch_size):
+#         batch_xs = x_trainingData[jj * batch_size: jj * batch_size + batch_size]
+#         batch_ys = y_trainingData[jj * batch_size: jj * batch_size + batch_size]
+#         sess.run(train, feed_dict={x: batch_xs, y_: batch_ys})
+#
+#     if(error > 0){
+#         previousError = error
+#     }
+#     error = sess.run(loss, feed_dict={x: x_validationData, y_: y_validationData})
+#     print "Epoch #:", epoch, "Error: ", error
 
 
 print "----------------------------------------------------------------------------------"
@@ -94,13 +115,13 @@ result = sess.run(y, feed_dict={x: x_testingData})
 ok = 0
 bad = 0
 for b, r in zip(y_testingData, result):
-    print b, "-->\n", r.round(0)
+    #print b, "-->\n", r.round(0)
     if(np.array_equal(b, r.round(0))):
         ok += 1
-        print "OK\n\n"
+        #print "OK\n\n"
     else:
         bad += 1
-        print "Miss\n\n"
+        #print "Miss\n\n"
 print "OK = ", ok
 print "Miss = ", bad
 error = float(bad) / float(ok + bad) * 100.

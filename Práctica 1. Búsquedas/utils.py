@@ -802,9 +802,9 @@ class Sorting(Queue):
         return len(self.A) - self.start
 
     def extend(self, items):
-        print "\nSe expande: " + str(items)
-        for item in items:
-            print "Path cost " + str(item) + "\n\tReal Cost: " + str(item.path_cost)
+        # print "\nSe expande: " + str(items)
+        # for item in items:
+        #     print "Path cost " + str(item) + "\n\tReal Cost: " + str(item.path_cost)
         self.A.sort(key=lambda node: node.path_cost)
         self.A.extend(items)
 
@@ -831,11 +831,11 @@ class Sorting2(Queue):
         return len(self.A) - self.start
 
     def extend(self, items):
-        print "\nExtend: " + str(items)
-        for item in items:
-            print "Path cost " + str(item) + "\n\tReal Cost: " + str(item.path_cost) + \
-                  "\n\tHeuristic Cost: " + str(self.problem.h(item)) + \
-                  "\n\tTotal Cost: " + str(item.path_cost + self.problem.h(item))
+        #print "\nExtend: " + str(items)
+        # for item in items:
+        #     print "Path cost " + str(item) + "\n\tReal Cost: " + str(item.path_cost) + \
+        #           "\n\tHeuristic Cost: " + str(self.problem.h(item)) + \
+        #           "\n\tTotal Cost: " + str(item.path_cost + self.problem.h(item))
         self.A.extend(items)
         self.A.sort(key=lambda node: node.path_cost + self.problem.h(node))
 
