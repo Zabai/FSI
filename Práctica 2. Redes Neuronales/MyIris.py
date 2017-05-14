@@ -44,7 +44,7 @@ W2 = tf.Variable(np.float32(np.random.rand(5, 3)) * 0.1)	# 5 neuronas capa ocult
 b2 = tf.Variable(np.float32(np.random.rand(3)) * 0.1)		# 3 bias, una para cada neurona final
 
 h = tf.nn.sigmoid(tf.matmul(x, W1) + b1)	# Sigmoide de [(Matmul: multiplica entradas por pesos) + el bias]
-# h = tf.matmul(x, W1) + b1  # Try this!
+
 y = tf.nn.softmax(tf.matmul(h, W2) + b2)	# Softmax de [(Matmul: multiplica la salida de las neuronas por pesos) + el bias]
                                             # Softmax garantiza que la suma de las salidas sea igual a 1
 
@@ -81,10 +81,8 @@ for b, r in zip(y_testingData, result):
     print b, "-->\n", r.round(0)
     if (np.array_equal(b, r.round(0))):
         ok += 1
-        print "OK\n\n"
     else:
         bad += 1
-        print "Miss\n\n"
 print "OK = ", ok
 print "Miss = ", bad
 error = float(bad) / float(ok + bad) * 100

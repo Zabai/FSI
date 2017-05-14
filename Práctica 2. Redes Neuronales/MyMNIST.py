@@ -93,19 +93,6 @@ while(1):
     epoch += 1
     prevError = error
 
-# for epoch in xrange(12):	# Epocas
-#     for jj in xrange(len(x_trainingData) / batch_size):
-#         batch_xs = x_trainingData[jj * batch_size: jj * batch_size + batch_size]
-#         batch_ys = y_trainingData[jj * batch_size: jj * batch_size + batch_size]
-#         sess.run(train, feed_dict={x: batch_xs, y_: batch_ys})
-#
-#     if(error > 0){
-#         previousError = error
-#     }
-#     error = sess.run(loss, feed_dict={x: x_validationData, y_: y_validationData})
-#     print "Epoch #:", epoch, "Error: ", error
-
-
 print "----------------------------------------------------------------------------------"
 # correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
 # accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -115,13 +102,10 @@ result = sess.run(y, feed_dict={x: x_testingData})
 ok = 0
 bad = 0
 for b, r in zip(y_testingData, result):
-    #print b, "-->\n", r.round(0)
     if(np.array_equal(b, r.round(0))):
         ok += 1
-        #print "OK\n\n"
     else:
         bad += 1
-        #print "Miss\n\n"
 print "OK = ", ok
 print "Miss = ", bad
 error = float(bad) / float(ok + bad) * 100.
